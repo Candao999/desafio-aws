@@ -1,9 +1,8 @@
 <?php
-// Configuração do banco de dados
 $host = 'localhost';
 $dbname = 'formulario';
-$username = 'desafio';       // usuário MySQL que você criou
-$password = 'senhaSegura';   // senha desse usuário
+$username = 'desafio';      
+$password = 'senhaSegura';   
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
