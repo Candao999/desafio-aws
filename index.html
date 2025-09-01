@@ -1,44 +1,58 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aula Bootstrap</title>
-
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
-
+    <title>Cadastro de Aluno</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css">
 </head>
 <body class="d-flex justify-content-center align-items-center min-vh-100">
     <div class="container">
         <div class="row justify-content-center">
             <form action="index.php" method="POST" class="p-4 border rounded shadow bg-light" style="max-width: 600px;">
-                <label>Nome:</label>
-                <input type="text" name="nome" required>
-            
-                <label>Idade:</label>
-                <input type="number" name="idade" min="10" max="50" required>
-            
-                <label>Isento:</label>
-                <input type="checkbox" name="isento">
-            
-                <label>Endereço:</label>
-                <input type="text" name="endereco" required>
-            
-                <label>Período:</label>
-                <input type="radio" name="periodo" value="Matutino"> Matutino
-                <input type="radio" name="periodo" value="Vespertino"> Vespertino
-                <input type="radio" name="periodo" value="Noturno" checked> Noturno
-            
-                <label>Observações:</label>
-                <textarea name="observacoes"></textarea>
-            
-                <button type="submit">Cadastrar</button>
-            </form>
+                
+                <div class="mb-3">
+                    <label for="txtNome" class="form-label">Nome:</label>
+                    <input type="text" class="form-control" id="txtNome" name="txtNome" placeholder="Digite seu Nome" required>
+                </div>
 
+                <div class="mb-3">
+                    <label for="txtIdade" class="form-label">Idade:</label>
+                    <input type="number" class="form-control" id="txtIdade" name="txtIdade" min="10" max="50" required>
+                </div>
+
+                <div class="mb-3 form-check">
+                    <input type="checkbox" class="form-check-input" id="chkAtivo" name="chkAtivo" value="1" checked>
+                    <label class="form-check-label" for="chkAtivo">Isento</label>
+                </div>
+
+                <div class="mb-3">
+                    <label for="txtEndereco" class="form-label">Endereço:</label>
+                    <input type="text" class="form-control" id="txtEndereco" name="txtEndereco" placeholder="Digite seu Endereço" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Período:</label><br>
+                    <input type="radio" id="matutino" name="rdbTurno" value="Matutino">
+                    <label for="matutino">Matutino</label><br>
+                    <input type="radio" id="vespertino" name="rdbTurno" value="Vespertino">
+                    <label for="vespertino">Vespertino</label><br>
+                    <input type="radio" id="noturno" name="rdbTurno" value="Noturno" checked>
+                    <label for="noturno">Noturno</label>
+                </div>
+
+                <div class="mb-3">
+                    <label for="txtObservacoes" class="form-label">Observações:</label>
+                    <textarea class="form-control" id="txtObservacoes" name="txtObservacoes" rows="4"></textarea>
+                </div>
+
+                <div class="d-flex justify-content-between">
+                    <button type="submit" class="btn btn-primary">Cadastrar</button>
+                    <button type="reset" class="btn btn-secondary">Limpar</button>
+                </div>
+
+            </form>
         </div>
     </div>
-    
 </body>
 </html>
