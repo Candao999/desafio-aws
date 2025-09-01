@@ -1,6 +1,6 @@
 <?php
 $host = 'localhost';
-$dbname = 'formulario';
+$dbname = 'desafioaws';
 $username = 'desafio';      
 $password = 'senhaSegura';   
 
