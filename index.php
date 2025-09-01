@@ -1,16 +1,18 @@
 <?php
 
-$host = 'localhost'; 
+$host = '127.0.0.1';  // usar IP evita alguns erros de socket
 $dbname = 'formulario';
-$username = 'root'; 
-$password = 'root';  
+$username = 'formuser';   // usuário criado no MySQL
+$password = '12345';      // senha que você definiu
 
 try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
+    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    echo "✅ Conectado com sucesso!<br>";
 } catch (PDOException $e) {
-    die("Erro ao conectar ao banco de dados: " . $e->getMessage());
+    die("❌ Erro ao conectar: " . $e->getMessage());
 }
+
 
 $nome = $email = $mensagem = '';
 $erro = $sucesso = '';
