@@ -2,9 +2,8 @@
 // Configuração do banco de dados
 $host = 'localhost';
 $dbname = 'formulario';
-$username = 'desafio';
-$password = 'senhaSegura';
-
+$username = 'desafio';       // usuário MySQL que você criou
+$password = 'senhaSegura';   // senha desse usuário
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
@@ -17,7 +16,8 @@ try {
 $nome = $email = $mensagem = '';
 $erro = $sucesso = '';
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+// Verifica envio do formulário
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nome = $_POST['nome'] ?? '';
     $email = $_POST['email'] ?? '';
     $mensagem = $_POST['mensagem'] ?? '';
@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         if ($stmt->execute()) {
             $sucesso = "Mensagem enviada com sucesso!";
-            $nome = $email = $mensagem = ''; // limpa campos após envio
+            $nome = $email = $mensagem = ''; // limpa campos
         } else {
             $erro = "Erro ao enviar a mensagem.";
         }
@@ -52,24 +52,29 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <body class="d-flex justify-content-center align-items-center min-vh-100">
     <div class="container">
         <div class="row justify-content-center">
-            <form method="POST" action="" class="p-4 border rounded shadow bg-light" style="max-width: 600px;">
-                <h2 class="mb-3">Formulário de Contato</h2>
+            <form method="POST" class="p-4 border rounded shadow bg-light" style="max-width: 600px;">
+                <h2 class="mb-4">Formulário de Contato</h2>
 
-                <?php if ($erro) echo "<div class='alert alert-danger'>$erro</div>"; ?>
-                <?php if ($sucesso) echo "<div class='alert alert-success'>$sucesso</div>"; ?>
+                <?php if ($erro): ?>
+                    <div class="alert alert-danger"><?php echo $erro; ?></div>
+                <?php endif; ?>
+
+                <?php if ($sucesso): ?>
+                    <div class="alert alert-success"><?php echo $sucesso; ?></div>
+                <?php endif; ?>
 
                 <div class="mb-3">
-                    <label for="nome" class="form-label">Nome:</label>
+                    <label for="nome" class="form-label">Nome</label>
                     <input type="text" id="nome" name="nome" class="form-control" value="<?php echo htmlspecialchars($nome); ?>" required>
                 </div>
 
                 <div class="mb-3">
-                    <label for="email" class="form-label">Email:</label>
+                    <label for="email" class="form-label">Email</label>
                     <input type="email" id="email" name="email" class="form-control" value="<?php echo htmlspecialchars($email); ?>" required>
                 </div>
 
                 <div class="mb-3">
-                    <label for="mensagem" class="form-label">Mensagem:</label>
+                    <label for="mensagem" class="form-label">Mensagem</label>
                     <textarea id="mensagem" name="mensagem" class="form-control" rows="4" required><?php echo htmlspecialchars($mensagem); ?></textarea>
                 </div>
 
