@@ -1,122 +1,135 @@
-# 🚀 Desafio AWS - Prática 4  
-## Instalar e Configurar um Servidor LAMP no Amazon Linux 2023  
+# 🏫 Desafio AWS - Cadastro de Alunos
 
-Este projeto descreve os procedimentos para instalar e configurar um servidor **LAMP** (Linux, Apache, MariaDB e PHP) em uma instância **Amazon Linux 2023 (AL2023)** na AWS.  
+Este projeto é um sistema simples de cadastro de alunos desenvolvido em **PHP**, **HTML/Bootstrap** e **MariaDB**, pronto para rodar em uma instância **EC2 Ubuntu**.
 
-O objetivo é criar um ambiente capaz de hospedar um site estático ou uma aplicação PHP dinâmica que se conecta a um banco de dados.  
-
----
-
-## 📌 Etapas do Desafio
-
-### 🔹 Etapa 1: Preparar o servidor LAMP  
-- Atualizar pacotes do sistema:  
-  ```bash
-  sudo dnf upgrade -y
-  ```
-- Instalar Apache, PHP e dependências:  
-  ```bash
-  sudo dnf install -y httpd wget php-fpm php-mysqli php-json php php-devel
-  ```
-- Instalar MariaDB:  
-  ```bash
-  sudo dnf install mariadb105-server
-  ```
-- Iniciar e habilitar o Apache:  
-  ```bash
-  sudo systemctl start httpd
-  sudo systemctl enable httpd
-  ```
-- Configurar permissões de `/var/www/html` para o usuário `ec2-user`.
+O sistema permite inserir dados de alunos através de um formulário web e armazená-los no banco de dados.
 
 ---
 
-### 🔹 Etapa 2: Testar o servidor LAMP  
-- Criar um arquivo de teste PHP:  
-  ```bash
-  echo "<?php phpinfo(); ?>" > /var/www/html/phpinfo.php
-  ```
-- Acessar no navegador:  
-  ```
-  http://<DNS-público-da-instância>/phpinfo.php
-  ```
-- Excluir o arquivo após o teste por questões de segurança:  
-  ```bash
-  rm /var/www/html/phpinfo.php
-  ```
+## 🔧 Pré-requisitos
+
+* EC2 Ubuntu Server (ex: Ubuntu 24.04 LTS)
+* Apache2
+* PHP >= 8.1 (`pdo_mysql`, `mbstring`, `xml`)
+* MariaDB / MySQL
+* Git
 
 ---
 
-### 🔹 Etapa 3: Proteger o servidor de banco de dados  
-- Iniciar MariaDB:  
-  ```bash
-  sudo systemctl start mariadb
-  ```
-- Executar configuração de segurança:  
-  ```bash
-  sudo mysql_secure_installation
-  ```
-  - Definir senha para o usuário root  
-  - Remover usuários anônimos  
-  - Desabilitar login remoto do root  
-  - Remover banco de dados de teste  
+## 📥 Instalação
+
+### 1. Atualizar Ubuntu e instalar pacotes necessários
+
+```bash
+sudo apt update && sudo apt upgrade -y
+sudo apt install apache2 php libapache2-mod-php php-mysql php-mbstring php-xml git wget unzip -y
+sudo systemctl restart apache2
+```
+
+### 2. Clonar o projeto
+
+```bash
+cd /var/www/html
+sudo git clone https://github.com/Candao999/desafio-aws.git
+cd desafio-aws
+```
+
+Se houver problemas de permissão com Git:
+
+```bash
+sudo git config --global --add safe.directory /var/www/html/desafio-aws
+```
 
 ---
 
-### 🔹 Etapa 4: Configurar SSL/TLS  
-- Instalar dependências:  
-  ```bash
-  sudo dnf install -y openssl mod_ssl
-  ```
-- Criar certificado autoassinado:  
-  ```bash
-  sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048   -keyout /etc/pki/tls/private/apache-selfsigned.key   -out /etc/pki/tls/certs/apache-selfsigned.crt
-  ```
-- Reiniciar Apache:  
-  ```bash
-  sudo systemctl restart httpd
-  ```
-- Acessar via `https://<DNS-público-da-instância>`
+## 💾 Banco de dados
 
-⚠️ **Nota**: Certificados autoassinados são apenas para teste. Para produção, utilize certificados válidos emitidos por uma CA confiável.
+### 1. Acessar MariaDB
 
----
+```bash
+sudo mariadb
+```
 
-### 🔹 Etapa 5: Instalar phpMyAdmin  
-- Instalar dependências:  
-  ```bash
-  sudo dnf -y install php-mbstring php-xml
-  ```
-- Reiniciar serviços:  
-  ```bash
-  sudo systemctl restart httpd
-  sudo systemctl restart php-fpm
-  ```
-- Configurar phpMyAdmin (colocar arquivos em `/var/www/html/phpmyadmin`).
+### 2. Criar banco e tabela
 
----
+```sql
+CREATE DATABASE IF NOT EXISTS desafio;
+USE desafio;
 
-## ✅ Resultado Esperado  
-Ao final das etapas:  
-- O Apache estará servindo páginas em HTTP e HTTPS.  
-- O PHP estará funcionando corretamente com suporte a MySQL/MariaDB.  
-- O banco MariaDB estará protegido e pronto para uso.  
-- O phpMyAdmin estará disponível para administração do banco.  
+CREATE TABLE IF NOT EXISTS alunos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    idade INT NOT NULL,
+    isento TINYINT(1) NOT NULL,
+    endereco VARCHAR(255) NOT NULL,
+    periodo VARCHAR(20) NOT NULL,
+    observacoes TEXT
+);
+```
+
+### 3. Criar usuário e conceder permissões
+
+```sql
+CREATE USER 'desafio'@'localhost' IDENTIFIED BY 'senhaSegura';
+GRANT ALL PRIVILEGES ON desafio.* TO 'desafio'@'localhost';
+FLUSH PRIVILEGES;
+```
+
+> Substitua `'senhaSegura'` por uma senha segura de sua escolha.
 
 ---
 
-## 🔒 Observações de Segurança  
-- Evite abrir portas públicas desnecessárias (use apenas **22, 80 e 443**).  
-- Nunca use `0.0.0.0/0` em produção para acesso SSH.  
-- Utilize certificados TLS válidos em ambientes de produção.  
+## 📝 Configuração do PHP
+
+No arquivo `index.php`, configure a conexão com o banco:
+
+```php
+$host = 'localhost';
+$dbname = 'desafio';
+$username = 'desafio';
+$password = 'senhaSegura';
+```
 
 ---
 
-## 📚 Referências  
-- [Documentação AWS - Amazon Linux 2023](https://docs.aws.amazon.com/linux/al2023/)  
-- [Apache HTTP Server](https://httpd.apache.org/)  
-- [MariaDB Documentation](https://mariadb.org/)  
-- [PHP Official Docs](https://www.php.net/docs.php)  
-- [phpMyAdmin Documentation](https://www.phpmyadmin.net/)  
+## 🌐 Uso do Formulário
+
+1. Abra o navegador e acesse:
+
+```
+http://<IP_da_instancia>/desafio-aws/index.html
+```
+
+2. Preencha os campos do formulário e clique em **Cadastrar**.
 
 ---
+
+## ⚡ Teste rápido pelo terminal
+
+```bash
+cd /var/www/html/desafio-aws
+php -r '
+$pdo = new PDO("mysql:host=localhost;dbname=desafio", "desafio", "senhaSegura");
+foreach($pdo->query("SELECT * FROM alunos") as $row) { print_r($row); }
+'
+```
+
+---
+
+## 🔒 Segurança
+
+* Use senhas fortes para o banco de dados.
+* Configure **Security Groups** na AWS para restringir acesso.
+* Evite usar phpMyAdmin sem SSL/TLS em produção.
+* Sempre atualize o Ubuntu e pacotes PHP/MariaDB.
+
+---
+
+## 📂 Estrutura do projeto
+
+```
+desafio-aws/
+├── index.html        # Formulário de cadastro
+├── index.php         # Script PHP para gravar dados no banco
+└── README.md         # Documentação
+```
