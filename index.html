@@ -13,83 +13,30 @@
 <body class="d-flex justify-content-center align-items-center min-vh-100">
     <div class="container">
         <div class="row justify-content-center">
-            <form action="#" method="post" name="frmDisciplina" class="p-4 border rounded shadow bg-light" style="max-width: 600px; max-height: 60%;" action="index.php" method="POST">
-                <div class="row">
-                    <div class="col-5">
-                        <legend>NOME</legend>
-                        <br>
-                        <input type="text" name="txtNome" size="40" placeholder="Digite seu Nome" required>
-                    </div>
-                </div>
-
-                <br>
-
-                <div class="row">
-                    <div class="col-3">
-                        <legend>IDADE</legend>
-                        <br>
-                        <input type="number" name="txtIdade" min="10" max="50" required>
-                    </div>
-                </div>
-
-                <br>
-
-                <div class="row">
-                    <div class="col-3">
-                        <br>
-                        <legend>ISENTO</legend>
-                        <input type="checkbox" name="chkAtivo" checked>
-                    </div>
-                </div>
-
-                <br>
-
-                <div class="row">
-                    <div class="col-5">
-                        <legend>ENDEREÇO</legend>
-                        <br>
-                        <input type="text" name="txtNome" size="60" placeholder="Digite seu Endereço" required>
-                    </div>
-                </div>
-
-                <br>
-
-                <div class="row">
-                    <div class="col-3">
-                        <legend>PERÍODO</legend>
-                        <br>
-                        <fieldset>
-                            <input type="radio" name="rdbTurno"> Matutino
-                            <br>
-                            <input type="radio" name="rdbTurno"> Vespertino
-                            <br>
-                            <input type="radio" name="rdbTurno" checked> Noturno
-                        </fieldset>
-                    </div>
-                </div>
-
-                <br>
-
-                <div class="row">
-                    <div class="col-4">
-                        <legend>OBSERVAÇÕES</legend>
-                        <br>
-                        <textarea rows="10" cols="30"></textarea>
-                    </div>
-                </div>
-
-                <br>
-
-                <div class="row">
-                    <div class="col-6 text-center">
-                        <button type="submit" name="btnCadastrar" class="btn btn-info">Cadastrar</button>
-                    </div>
-                    <div class="col-6 text-center">
-                        <button type="reset" name="btnLimmpar" class="btn btn-info">Limpar</button>
-                    </div>
-                </div>
-                
+            <form action="index.php" method="POST" class="p-4 border rounded shadow bg-light" style="max-width: 600px;">
+                <label>Nome:</label>
+                <input type="text" name="nome" required>
+            
+                <label>Idade:</label>
+                <input type="number" name="idade" min="10" max="50" required>
+            
+                <label>Isento:</label>
+                <input type="checkbox" name="isento">
+            
+                <label>Endereço:</label>
+                <input type="text" name="endereco" required>
+            
+                <label>Período:</label>
+                <input type="radio" name="periodo" value="Matutino"> Matutino
+                <input type="radio" name="periodo" value="Vespertino"> Vespertino
+                <input type="radio" name="periodo" value="Noturno" checked> Noturno
+            
+                <label>Observações:</label>
+                <textarea name="observacoes"></textarea>
+            
+                <button type="submit">Cadastrar</button>
             </form>
+
         </div>
     </div>
     
